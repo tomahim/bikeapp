@@ -1,9 +1,10 @@
 import logo from "./assets/logo.jpg";
 import "./App.scss";
 import { useState } from "react";
-import HeartRateMonitor from "./HeartRateMonitor";
+import { useHeartRate } from "./hooks/useHeartRate";
 
 function App() {
+  const { heartRate, connect, disconnect } = useHeartRate();
   // @ts-ignore
   const [speed, setSpeed] = useState(10.5);
   // @ts-ignore
@@ -16,8 +17,20 @@ function App() {
       <div className="logo">
         <img alt="logo" src={logo} />
       </div>
+
+      <button onClick={connect}>Connect to HR Monitor</button>
+      <button onClick={disconnect} disabled={!heartRate}>
+        Disconnect
+      </button>
+
       <div className="gauges">
-        <b>{speed}</b> km/h - <b>{power}w</b> - <HeartRateMonitor />
+        <b>{speed}</b> km/h - <b>{power}w</b>
+        {heartRate && (
+          <>
+            {" "}
+            - <b>{heartRate}</b> BPM
+          </>
+        )}
       </div>
       <div className="logs">
         <h2>Logs</h2>

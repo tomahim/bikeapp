@@ -1,0 +1,23 @@
+$gray: rgb(238 238 238 / 85%);
+
+
+.logo {
+  img {
+    width: 100px;
+  }
+}
+
+.gauges {
+  padding: 20px;
+  background-color: $gray;
+}
+
+.logs {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: $gray;
+  .log {
+    border-bottom: 1px solid black;
+    padding: 10px 0;
+  }
+}

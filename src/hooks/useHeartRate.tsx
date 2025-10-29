@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from "react";
 
-// Parse the raw DataView exactly like the original `parseHeartRate`
 const parseHeartRate = (dv: DataView): number => {
   const flags = dv.getUint8(0);
   const rate16Bits = flags & 0x1;
@@ -15,7 +14,6 @@ const parseHeartRate = (dv: DataView): number => {
 
 /**
  * Custom hook that returns **only** the parsed heart rate data.
- * Must be triggered by a user gesture (e.g. button click).
  * Inspiration taken from: https://webbluetoothcg.github.io/web-bluetooth/
  */
 export const useHeartRate = () => {
@@ -39,6 +37,7 @@ export const useHeartRate = () => {
     try {
       // @ts-ignore
       const device = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: false,
         filters: [{ services: ["heart_rate"] }],
       });
 
@@ -53,7 +52,7 @@ export const useHeartRate = () => {
     } catch (err: unknown) {
       console.error("Bluetooth connection failed:", err);
       setHeartRate(null);
-      throw err; // Let caller handle if needed
+      throw err;
     }
   }, [onHeartRateChanged]);
 
@@ -69,11 +68,6 @@ export const useHeartRate = () => {
     }
     setHeartRate(null);
   }, [onHeartRateChanged]);
-
-  // Cleanup on unmount
-  // (React 18+ strict mode may mount twice – useRef prevents duplicate listeners)
-
-  // useEffect(() => () => disconnect(), []);
 
   return {
     heartRate, // Only the parsed heart rate object

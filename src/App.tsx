@@ -2,13 +2,16 @@ import logo from "./assets/logo.jpg";
 import "./App.scss";
 import { useState } from "react";
 import { useHeartRate } from "./hooks/useHeartRate";
+import { useFitnessMachine } from "./hooks/useFitnessMachine";
 
 function App() {
-  const { heartRate, connect, disconnect } = useHeartRate();
-  // @ts-ignore
-  const [speed, setSpeed] = useState(10.5);
-  // @ts-ignore
-  const [power, setPower] = useState(150);
+  const {
+    heartRate,
+    connect: connectHR,
+    disconnect: disconnectHR,
+  } = useHeartRate();
+  const { data, connect, disconnect } = useFitnessMachine();
+  const { instantaneousPower, instantaneousCadence, instantaneousSpeed } = data;
   // @ts-ignore
   const [logs, setLogs] = useState(["test log 1", "test log 2"]);
 
@@ -18,13 +21,24 @@ function App() {
         <img alt="logo" src={logo} />
       </div>
 
-      <button onClick={connect}>Connect to HR Monitor</button>
-      <button onClick={disconnect} disabled={!heartRate}>
-        Disconnect
-      </button>
+      <div>
+        <button onClick={connect}>Connect home trainer</button>
+        <button onClick={disconnect} disabled={!heartRate}>
+          Disconnect
+        </button>
+      </div>
+
+      <div>
+        <button onClick={connectHR}>Connect to HR Monitor</button>
+        <button onClick={disconnectHR} disabled={!heartRate}>
+          Disconnect
+        </button>
+      </div>
 
       <div className="gauges">
-        <b>{speed}</b> km/h - <b>{power}w</b>
+        <b>{instantaneousSpeed ? instantaneousSpeed : "Ø"}</b> km/h -{" "}
+        <b>{instantaneousPower ? instantaneousPower : "Ø"} w</b> -{" "}
+        <b>{instantaneousCadence ? instantaneousCadence : "Ø"} RPM</b>
         {heartRate && (
           <>
             {" "}

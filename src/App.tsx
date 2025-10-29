@@ -4,8 +4,11 @@ import { useState } from 'react';
 
 function App() {
 
+  // @ts-ignore
   const [speed, setSpeed] = useState(10.5);
+  // @ts-ignore
   const [power, setPower] = useState(150);
+  // @ts-ignore
   const [logs, setLogs] = useState(["test log 1", "test log 2"]);
 
   return (

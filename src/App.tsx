@@ -1,9 +1,9 @@
-import logo from './assets/logo.jpg'
-import './App.scss'
-import { useState } from 'react';
+import logo from "./assets/logo.jpg";
+import "./App.scss";
+import { useState } from "react";
+import HeartRateMonitor from "./HeartRateMonitor";
 
 function App() {
-
   // @ts-ignore
   const [speed, setSpeed] = useState(10.5);
   // @ts-ignore
@@ -17,14 +17,16 @@ function App() {
         <img alt="logo" src={logo} />
       </div>
       <div className="gauges">
-        <b>{speed}</b> km/h - <b>{power}w</b>
+        <b>{speed}</b> km/h - <b>{power}w</b> - <HeartRateMonitor />
       </div>
       <div className="logs">
         <h2>Logs</h2>
-        {logs.map(log => <div className="log">{log}</div>)}
+        {logs.map((log) => (
+          <div className="log">{log}</div>
+        ))}
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

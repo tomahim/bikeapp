@@ -4,7 +4,7 @@
     "target": "ES2023",
     "lib": ["ES2023"],
     "module": "ESNext",
-    "types": ["node"],
+    "types": ["node", "web-bluetooth"],
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -21,6 +21,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
+    
   },
   "include": ["vite.config.ts"]
 }

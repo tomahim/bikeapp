@@ -15,7 +15,6 @@ jobs:
           node-version: '20'
       - name: Install dependencies and build
         run: |
-          cd frontend
           npm install
           npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0

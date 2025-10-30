@@ -21,6 +21,7 @@ function useDistance(timer: number, instantaneousSpeed: number) {
   useEffect(() => {
     const increment = speedRef.current / 3600;
     setDistance((d) => d + increment);
+    // TODO: also compute average power, is it better to do a new hook or a more generic hook like useComputedMetrics ?
   }, [timer]);
 
   return { distance: roundDecimals(distance) };

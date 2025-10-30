@@ -46,7 +46,7 @@ export interface IndoorBikeData {
   nativeElapsedTime: number; // seconds
 }
 
-const defaultData: IndoorBikeData = {
+export const defaultData: IndoorBikeData = {
   instantaneousSpeedPresent: false,
   instantaneousSpeed: 0,
   averageSpeedPresent: false,

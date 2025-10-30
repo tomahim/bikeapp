@@ -1,8 +1,30 @@
 import logo from "./assets/logo.jpg";
 import "./App.scss";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHeartRate } from "./hooks/useHeartRate";
 import { useFitnessMachine } from "./hooks/useFitnessMachine";
+import useDemoFitnessMachine from "./hooks/useDemoFitnessMachine";
+import useSecondCounter from "./hooks/useSecondCounter";
+
+function roundDecimals(num: number) {
+  return Math.round(num * 100) / 100;
+}
+
+function useDistance(timer: number, instantaneousSpeed: number) {
+  const [distance, setDistance] = useState(0);
+
+  const speedRef = useRef(instantaneousSpeed);
+  useEffect(() => {
+    speedRef.current = instantaneousSpeed; // always up-to-date
+  }, [instantaneousSpeed]);
+
+  useEffect(() => {
+    const increment = speedRef.current / 3600;
+    setDistance((d) => d + increment);
+  }, [timer]);
+
+  return { distance: roundDecimals(distance) };
+}
 
 function App() {
   const {
@@ -10,10 +32,16 @@ function App() {
     connect: connectHR,
     disconnect: disconnectHR,
   } = useHeartRate();
-  const { data, connect, disconnect } = useFitnessMachine();
+  const { data: dataFitnessMachine, connect, disconnect } = useFitnessMachine();
+  const { data: dataDemo } = useDemoFitnessMachine();
+  const { counter } = useSecondCounter();
+
+  // TODO: make a toggle between demo and real fitnessMachine
+  const isDemo = true;
+  const data = isDemo ? dataDemo : dataFitnessMachine;
   const { instantaneousPower, instantaneousCadence, instantaneousSpeed } = data;
-  // @ts-ignore
-  const [logs, setLogs] = useState(["test log 1", "test log 2"]);
+
+  const { distance } = useDistance(counter, instantaneousSpeed);
 
   return (
     <>
@@ -35,6 +63,8 @@ function App() {
         </button>
       </div>
 
+      <div className="time-counter">{counter}s</div>
+
       <div className="gauges">
         <b>{instantaneousSpeed ? instantaneousSpeed : "Ø"}</b> km/h -{" "}
         <b>{instantaneousPower ? instantaneousPower : "Ø"} w</b> -{" "}
@@ -45,12 +75,7 @@ function App() {
             - <b>{heartRate}</b> BPM
           </>
         )}
-      </div>
-      <div className="logs">
-        <h2>Logs</h2>
-        {logs.map((log) => (
-          <div className="log">{log}</div>
-        ))}
+        - {distance} m
       </div>
     </>
   );

@@ -5,6 +5,8 @@ import { useHeartRate } from "./hooks/useHeartRate";
 import { useFitnessMachine } from "./hooks/useFitnessMachine";
 import useDemoFitnessMachine from "./hooks/useDemoFitnessMachine";
 import useSecondCounter from "./hooks/useSecondCounter";
+import "mapbox-gl/dist/mapbox-gl.css";
+import Map from "./Map";
 
 function roundDecimals(num: number) {
   return Math.round(num * 100) / 100;
@@ -78,6 +80,8 @@ function App() {
         )}
         - {distance} m
       </div>
+
+      <Map />
     </>
   );
 }
